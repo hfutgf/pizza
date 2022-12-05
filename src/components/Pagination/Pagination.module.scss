@@ -1,0 +1,40 @@
+.paginate {
+  display: flex;
+  gap: 20px;
+  font-size: 30px;
+  font-weight: 600;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  width: 180px;
+  margin: 0 auto;
+
+  li {
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    border: 1px solid #fe5f1e;
+    padding: 5px;
+    transition: all 0.3s ease-in-out;
+    a {
+      color: #fe5f1e;
+      
+    }
+  }
+
+  li:hover {
+    background-color: #fe5f1e;
+    a {
+      color: #fff;
+    }
+  }
+
+  :global {
+    .selected {
+      background-color: #fe5f1e;
+      a {
+        color: #fff;
+
+      }
+    }
+  }
+}

@@ -1,0 +1,86 @@
+@import "../variables.scss";
+.pizza {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.pizza-block {
+  width: 280px;
+  text-align: center;
+  margin-bottom: 65px;
+
+  &__image {
+    width: 260px;
+    @media (max-width: 820px) {
+      width: 200px;
+    }
+  }
+
+  &__title {
+    font-size: 20px;
+    font-weight: 900;
+    letter-spacing: 1%;
+    margin-bottom: 20px;
+    @media (max-width: 410px) {
+      font-size: 17px;
+    }
+  }
+
+  &__selector {
+    display: flex;
+    background-color: #f3f3f3;
+    border-radius: 10px;
+    flex-direction: column;
+    padding: 6px;
+    @media (max-width: 420px) {
+      width: 200px;
+      margin: 0 auto;
+    }
+
+    ul {
+      display: flex;
+      flex: 1;
+      @media (max-width: 420px) {
+        flex-direction: column;
+      }
+
+      &:first-of-type {
+        margin-bottom: 6px;
+      }
+
+      li {
+        width: 100%;
+        padding: 8px;
+        flex: 1;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 14px;
+        @include noselect();
+        &.active {
+          background: #ffffff;
+          box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.04);
+          border-radius: 5px;
+          cursor: auto;
+        }
+      }
+    }
+  }
+
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    @media (max-width: 420px) {
+      flex-direction: column;
+      gap: 20px;
+    }
+  }
+
+  &__price {
+    font-weight: bold;
+    font-size: 22px;
+    line-height: 27px;
+    letter-spacing: 0.015em;
+  }
+}
