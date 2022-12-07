@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect,  } from "react";
+import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSort } from "../../redux/slices/filterSlice";
+import { setSort, setSortOpen } from "../../redux/slices/filterSlice";
 export const list = [
   {
     name: "популярности",
@@ -16,17 +17,34 @@ export const list = [
   },
 ];
 const Sort = () => {
-  const [sortOpen, setSortOpen] = useState(false);
   const dispatch = useDispatch();
+  const sortRef = useRef();
 
-  const sorted = useSelector((state) => state.filter.sort);
+  const { sortOpen,  } = useSelector((state) => state?.filter);
+  const sorted = useSelector((state) => state?.filter?.sort);
+  console.log(sorted?.name);
+
   const handleClick = (obj) => {
     dispatch(setSort(obj));
     setSortOpen(!sortOpen);
   };
 
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (!event.path.includes(sortRef.current)) {
+        setSortOpen(false);
+      }
+
+      document.body.addEventListener("click", handleClickOutside);
+    };
+
+    return () => {
+      document.body.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className="sort">
+    <div ref={sortRef} className="sort">
       <div className="sort__label">
         <svg
           width="10"
@@ -46,7 +64,7 @@ const Sort = () => {
             setSortOpen(!sortOpen);
           }}
         >
-          {sorted.name}
+          {sorted?.name}
         </span>
       </div>
       {sortOpen && (
@@ -60,7 +78,7 @@ const Sort = () => {
                   sort.sortProperty === sorted.sortProperty ? "active" : ""
                 }
               >
-                {sort.name}
+                {sort?.name}
               </li>
             ))}
           </ul>

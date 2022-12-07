@@ -18,7 +18,7 @@ body {
 
 .content {
   padding: 40px 0;
-
+  margin: 0 auto;
   &__title {
     margin: 50px 0;
     font-size: 42px;
@@ -154,7 +154,6 @@ body {
       }
     }
   }
-
 
   &__item {
     display: flex;
@@ -309,7 +308,7 @@ body {
           margin-right: 12px;
           path {
             fill: transparent;
-            stroke-width: 2;
+            strokewidth: 2;
           }
         }
       }
@@ -360,3 +359,4 @@ body {
     }
   }
 }
+
