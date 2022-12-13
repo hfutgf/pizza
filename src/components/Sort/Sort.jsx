@@ -1,4 +1,4 @@
-import React, { useEffect,  } from "react";
+import React, { useEffect, useState,  } from "react";
 import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { setSort, setSortOpen } from "../../redux/slices/filterSlice";
@@ -19,30 +19,15 @@ export const list = [
 const Sort = () => {
   const dispatch = useDispatch();
   const sortRef = useRef();
-
-  const { sortOpen,  } = useSelector((state) => state?.filter);
+  const [onSort, setOnSort] = useState(false)
   const sorted = useSelector((state) => state?.filter?.sort);
-  console.log(sorted?.name);
 
   const handleClick = (obj) => {
     dispatch(setSort(obj));
-    setSortOpen(!sortOpen);
+    setOnSort(false);
   };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.path.includes(sortRef.current)) {
-        setSortOpen(false);
-      }
-
-      document.body.addEventListener("click", handleClickOutside);
-    };
-
-    return () => {
-      document.body.removeEventListener("click", handleClickOutside);
-    };
-  }, []);
-
+ 
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
@@ -61,13 +46,13 @@ const Sort = () => {
         <b>Сортировка по:</b>
         <span
           onClick={() => {
-            setSortOpen(!sortOpen);
+            setOnSort(!onSort);
           }}
         >
           {sorted?.name}
         </span>
       </div>
-      {sortOpen && (
+      {onSort && (
         <div className="sort__popup">
           <ul>
             {list.map((sort, i) => (
@@ -75,7 +60,7 @@ const Sort = () => {
                 onClick={() => handleClick(sort)}
                 key={i}
                 className={
-                  sort.sortProperty === sorted.sortProperty ? "active" : ""
+                  sort?.sortProperty === sorted?.sortProperty ? "active" : ""
                 }
               >
                 {sort?.name}
