@@ -1,8 +1,15 @@
-import React, { useEffect, useState,  } from "react";
+import React, { useEffect, useState } from "react";
 import { useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { setSort, setSortOpen } from "../../redux/slices/filterSlice";
-export const list = [
+import { setSort } from "../../redux/slices/filterSlice";
+import { RootState } from '../../redux/store';
+
+type SortItem = {
+  name: string;
+  sortProperty: string;
+  [k: string]: string | number
+};
+export const list: SortItem[] = [
   {
     name: "популярности",
     sortProperty: "rating",
@@ -16,18 +23,35 @@ export const list = [
     sortProperty: "title",
   },
 ];
-const Sort = () => {
+const Sort: React.FC = () => {
   const dispatch = useDispatch();
-  const sortRef = useRef();
-  const [onSort, setOnSort] = useState(false)
-  const sorted = useSelector((state) => state?.filter?.sort);
+  const sortRef = useRef<HTMLDivElement | null>(null);
+  const [onSort, setOnSort] = useState<boolean>(false);
+type Sorted ={
+  filter: { sort: SortItem }
+}
 
-  const handleClick = (obj) => {
+  const sorted = useSelector(
+    (state: RootState) => state.filter.sort
+  );
+
+  const handleClick = (obj: SortItem) => {
     dispatch(setSort(obj));
     setOnSort(false);
   };
 
- 
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      const _event = event as MouseEvent & {
+        path: Node[];
+      };
+      if (sortRef.current && !_event.path.includes(sortRef.current)) {
+        setOnSort(false);
+      }
+    };
+    document.body.addEventListener("click", handleClickOutside);
+    return () => document.body.removeEventListener("click", handleClickOutside);
+  }, []);
   return (
     <div ref={sortRef} className="sort">
       <div className="sort__label">
@@ -55,7 +79,7 @@ const Sort = () => {
       {onSort && (
         <div className="sort__popup">
           <ul>
-            {list.map((sort, i) => (
+            {list.map((sort: SortItem, i) => (
               <li
                 onClick={() => handleClick(sort)}
                 key={i}
